@@ -14,9 +14,11 @@ class FileStorage:
         FileStorage.__objects[key_obj] = obj
 
     def save(self):
-        print("----------", FileStorage.__objects)
-        with open(FileStorage.__file_path, 'w') as file:
-            json.dump(FileStorage.__objects, file)
+        dict_to_store = {}
+        for key, value in FileStorage.__objects.items():
+            dict_to_store[key] = value.to_dict()
+        with open(FileStorage.__file_path, 'a') as file:
+            json.dump(dict_to_store, file)
 
     def reload(self):
         try:
