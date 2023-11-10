@@ -4,7 +4,8 @@ This file defines the HBnB console.
 """
 
 import cmd
-from models import base_model, storage
+from models import storage
+from models.base_model import BaseModel
 
 
 class HBNBCommand(cmd.Cmd):
@@ -33,6 +34,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, arg):
         """Creates a new instance of a given class and prints its id.
+        Usage: create <class>
         """
         if not arg:
             print("** class name missing **")
@@ -40,8 +42,27 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         else:
             if arg == "BaseModel":
-                print("{}".format(base_model.BaseModel().id))
-                storage.save()            
+                inst = BaseModel()
+                print("{}".format(inst.id))
+                inst.save()
+
+    def do_show(self, arg):
+        """Prints the string representation of an instance
+        based on the class name and id.
+        Usage: show <class> <id>
+        """
+        o_dict = storage.all()
+        args = arg.split(" ")
+        if args[0] == '':
+            print("** class name missing **")
+        elif args[0] not in HBNBCommand.__classes:
+            print("** class doesn't exist **")
+        elif len(args) < 2:
+            print("** instance id missing **")
+        elif "{}.{}".format(args[0], args[1]) not in o_dict:
+            print("** no instance found **")
+        else:
+            print(o_dict["{}.{}".format(args[0], args[1])])
 
 
 if __name__ == '__main__':
