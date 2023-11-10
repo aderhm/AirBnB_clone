@@ -13,16 +13,10 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         if kwargs:
-            if 'id' not in kwargs:
-                kwargs['id'] = str(uuid4())
-            if 'created_at' not in kwargs:
-                kwargs['created_at'] = datetime.now()
-            elif not isinstance(kwargs['created_at'], datetime):
+            if not isinstance(kwargs['created_at'], datetime):
                 kwargs['created_at'] = datetime.strptime(
                     kwargs['created_at'], "%Y-%m-%dT%H:%M:%S.%f")
-            if 'updated_at' not in kwargs:
-                kwargs['updated_at'] = datetime.now()
-            elif not isinstance(kwargs['updated_at'], datetime):
+            if not isinstance(kwargs['updated_at'], datetime):
                 kwargs['updated_at'] = datetime.strptime(
                     kwargs['updated_at'], "%Y-%m-%dT%H:%M:%S.%f")
 
@@ -34,7 +28,7 @@ class BaseModel:
             self.id = str(uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-        storage.new(self)
+            storage.new(self)
 
     def __str__(self):
         return "[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__)
@@ -44,7 +38,11 @@ class BaseModel:
         storage.save()
 
     def to_dict(self):
-        self.created_at = self.created_at.strftime("%Y-%m-%dT%H:%M:%S.%f")
-        self.updated_at = self.updated_at.strftime("%Y-%m-%dT%H:%M:%S.%f")
-        self.__dict__['__class__'] = self.__class__.__name__
-        return self.__dict__
+        copy_of_dict = self.__dict__.copy()
+        print("copy", copy_of_dict)
+        copy_of_dict['created_at'] = self.created_at.strftime(
+            "%Y-%m-%dT%H:%M:%S.%f")
+        copy_of_dict['updated_at'] = self.updated_at.strftime(
+            "%Y-%m-%dT%H:%M:%S.%f")
+        copy_of_dict['__class__'] = self.__class__.__name__
+        return copy_of_dict
