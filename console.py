@@ -4,6 +4,7 @@ This file defines the HBnB console.
 """
 
 import cmd
+import shlex
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
@@ -97,6 +98,34 @@ class HBNBCommand(cmd.Cmd):
         else:
             all_insts = [f'{value}' for key, value in o_dict.items()]
         print(all_insts)
+
+    def do_update(self, arg):
+        """Updates an instance based on the class name and id
+        by adding or updating attribute
+        Usage: update <class name> <id> <attribute name> "<attribute value>"
+        """
+        o_dict = storage.all()
+        args = shlex.split(arg)
+        if args[0] == '':
+            print("** class name missing **")
+        elif args[0] not in HBNBCommand.__classes:
+            print("** class doesn't exist **")
+        elif len(args) < 2:
+            print("** instance id missing **")
+        elif "{}.{}".format(args[0], args[1]) not in o_dict:
+            print("** no instance found **")
+        elif len(args) < 3:
+            print("** attribute name missing **")
+        elif len(args) < 4:
+            print("** value missing **")
+        else:
+            obj = o_dict["{}.{}".format(args[0], args[1])]
+            if args[2] in obj.__class__.__dict__.keys():
+                value_type = type(obj.__class__.__dict__[args[2]])
+                obj.__dict__[args[2]] = value_type(args[3].strip('"'))
+            else:
+                obj.__dict__[args[2]] = args[3].strip('"')
+            storage.save()
 
 
 if __name__ == '__main__':
