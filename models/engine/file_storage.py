@@ -61,5 +61,5 @@ class FileStorage:
                 className = getattr(module, classNameString)
 
                 FileStorage.__objects[key] = className(**value)
-        except ModuleNotFoundError as e:
+        except Exception as e:
             return
