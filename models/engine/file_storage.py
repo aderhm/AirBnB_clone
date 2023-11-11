@@ -53,8 +53,9 @@ class FileStorage:
                 classNameString = key.split('.')[0]
                 if classNameString == "BaseModel":
                     modulePath = 'models.base_model'
-                elif classNameString == "User":
-                    modulePath = 'models.user'
+                else:
+                    modulePath = 'models.{}{}'.format(
+                        classNameString[0].lower(), classNameString[1:])
 
                 module = importlib.import_module(modulePath)
                 className = getattr(module, classNameString)
