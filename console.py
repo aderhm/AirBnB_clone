@@ -104,13 +104,13 @@ class HBNBCommand(cmd.Cmd):
         if arg:
             if arg not in HBNBCommand.__classes:
                 print("** class doesn't exist **")
-                return
             else:
                 all_insts = [f'{value}' for key, value in o_dict.items()
                              if key.startswith(arg)]
+                print(all_insts)
         else:
             all_insts = [f'{value}' for key, value in o_dict.items()]
-        print(all_insts)
+            print(all_insts)
 
     def do_update(self, arg):
         """Updates an instance based on the class name and id
