@@ -9,7 +9,7 @@ from models.user import User
 from models.base_model import BaseModel
 
 
-class UserCase(unittest.TestCase):
+class TestUser(unittest.TestCase):
     """Tests instances and methods from user class.
     """
 
