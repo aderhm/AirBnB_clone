@@ -15,7 +15,8 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """
-            initialize attributes and create a new Object inside storage.__objects
+            initialize attributes and create a new Object
+            inside storage.__objects
         """
         if kwargs:
             if not isinstance(kwargs['created_at'], datetime):
@@ -39,12 +40,13 @@ class BaseModel:
         """
             return the string format representation
         """
-        return "[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__)
+        return "[{}] ({}) {}".format(self.__class__.__name__,
+                                     self.id, self.__dict__)
 
     def save(self):
         """
             update the key update_at and save the object in the file.json
-            by calling the method storage.save() 
+            by calling the method storage.save()
         """
         self.updated_at = datetime.now()
         storage.save()
@@ -53,7 +55,7 @@ class BaseModel:
         """
             copy the __dict__ to a new object and change the format of datetime
             also add a new key __class__ hold the name of the class
-            return the copy dict 
+            return the copy dict
         """
         copy_of_dict = self.__dict__.copy()
         copy_of_dict['created_at'] = self.created_at.strftime(
