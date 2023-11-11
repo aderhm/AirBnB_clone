@@ -19,11 +19,20 @@ class TestBaseModel(unittest.TestCase):
         self.my_model = BaseModel()
         self.my_second_model = BaseModel()
 
+    def test_attr_exist(self):
+        """
+            test if all attr set to object
+        """
+        dict_model = self.my_model.__dict__
+        self.assertIn('id', dict_model)
+        self.assertIn('created_at', dict_model)
+        self.assertIn('updated_at', dict_model)
+
     def test_type_attr(self):
         """
             test the type and instances of attributes
         """
-        self.assertIsInstance(self.my_model.id, str)
+        self.assertIsInstance(self.my_model, BaseModel)
         self.assertIsInstance(self.my_model.created_at, datetime.datetime)
         self.assertIsInstance(self.my_model.updated_at, datetime.datetime)
         self.assertIsInstance(self.my_second_model.id, str)
@@ -37,6 +46,11 @@ class TestBaseModel(unittest.TestCase):
             test ids
         """
         self.assertNotEqual(self.my_model.id, self.my_second_model.id)
+
+    def test_printing(self):
+        string = "[BaseModel] ({}) {}".format(
+            self.my_model.id, self.my_model.__dict__)
+        self.assertEqual(string, str(self.my_model))
 
     def test_to_dict(self):
         """
