@@ -29,9 +29,14 @@ class FileStorage:
 
             for key, value in data.items():
                 classNameString = key.split('.')[0]
-                module_name = 'models.base_model'
+                print(classNameString)
+                if classNameString == "BaseModel":
+                    modulePath = 'models.base_model'
+                elif classNameString == "User":
+                    modulePath = 'models.user'
+
                 try:
-                    module = importlib.import_module(module_name)
+                    module = importlib.import_module(modulePath)
                     className = getattr(module, classNameString)
                 except Exception as e:
                     print(e)
