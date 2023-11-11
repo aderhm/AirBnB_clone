@@ -6,6 +6,7 @@ This file defines the HBnB console.
 import cmd
 from models import storage
 from models.base_model import BaseModel
+from models.user import User
 
 
 class HBNBCommand(cmd.Cmd):
@@ -14,7 +15,7 @@ class HBNBCommand(cmd.Cmd):
     """
 
     prompt = "(hbnb) "
-    __classes = ["BaseModel"]
+    __classes = ["BaseModel", "User"]
 
     def do_quit(self, arg):
         """Quit command to exit the program.
@@ -41,10 +42,8 @@ class HBNBCommand(cmd.Cmd):
         elif arg not in HBNBCommand.__classes:
             print("** class doesn't exist **")
         else:
-            if arg == "BaseModel":
-                inst = BaseModel()
-                print("{}".format(inst.id))
-                inst.save()
+            print(eval(arg)().id)
+            storage.save()
 
     def do_show(self, arg):
         """Prints the string representation of an instance
@@ -81,6 +80,23 @@ class HBNBCommand(cmd.Cmd):
         else:
             del o_dict["{}.{}".format(args[0], args[1])]
             storage.save()
+
+    def do_all(slef, arg):
+        """Prints all string representation of all instances
+        based or not on the class name.
+        Usage: all or all <class>
+        """
+        o_dict = storage.all()
+        if arg:
+            if arg not in HBNBCommand.__classes:
+                print("** class doesn't exist **")
+                return
+            else:
+                all_insts = [f'{value}' for key, value in o_dict.items()
+                             if key.startswith(arg)]
+        else:
+            all_insts = [f'{value}' for key, value in o_dict.items()]
+        print(all_insts)
 
 
 if __name__ == '__main__':
