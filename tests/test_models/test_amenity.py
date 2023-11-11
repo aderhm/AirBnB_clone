@@ -10,7 +10,7 @@ from models.base_model import BaseModel
 
 
 class TestAmenity(unittest.TestCase):
-    """Tests instances and methods from state class
+    """Tests instances and methods from amenity class
     """
 
     amenity = Amenity()
