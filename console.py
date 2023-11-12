@@ -50,7 +50,7 @@ class HBNBCommand(cmd.Cmd):
         _class = match_cdc_syntax.group(1)
         _command = match_cdc_syntax.group(2)
         _arg = match_cdc_syntax.group(3).strip('"')
-        
+
         cdc = _command + " " + _class + " " + _arg
         self.onecmd(cdc)
         return cdc
