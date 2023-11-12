@@ -4,6 +4,7 @@
 
 import unittest
 import os
+import json
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 
@@ -50,11 +51,18 @@ class TestFileStorage(unittest.TestCase):
         self.assertIn(obj_1, all_objects.values())
         self.assertIn(obj_2, all_objects.values())
 
-    def test_reload_missing_file(self):
-        """
-            test missing file
-        """
-        self.assertRaises(FileNotFoundError, self.storage.reload())
+    def test_created_file(self):
+        if os.path.exists(self.storage._FileStorage__file_path):
+            os.remove(self.storage._FileStorage__file_path)
+
+        obj_1 = BaseModel()
+        self.storage.save()
+
+        self.assertTrue(os.path.exists(self.storage._FileStorage__file_path))
+        with open(self.storage._FileStorage__file_path, 'r') as file:
+            data = json.load(file)
+
+        self.assertIn('BaseModel.{}'.format(obj_1.id), data.keys())
 
     def test_empty_json(self):
         """
