@@ -20,10 +20,6 @@ class TestFileStorage(unittest.TestCase):
         storage = FileStorage()
         self.storage = storage
 
-    def tearDown(self):
-        if os.path.exists(self.storage._FileStorage__file_path):
-            os.remove(self.storage._FileStorage__file_path)
-
     def test_has_attr(self):
         """
             test if my object has the all methods
@@ -39,6 +35,16 @@ class TestFileStorage(unittest.TestCase):
         """
         all_objects = self.storage.all()
         self.assertIsInstance(all_objects, dict)
+
+    def test_empty_json(self):
+        """
+            test empty object
+        """
+        self.storage._FileStorage__objects = {}
+        self.storage.save()
+        self.storage.reload()
+        object_reloaded = self.storage._FileStorage__objects
+        self.assertEqual({}, object_reloaded)
 
     def test_new_object(self):
         """
