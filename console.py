@@ -136,6 +136,19 @@ class HBNBCommand(cmd.Cmd):
             all_insts = [f'{value}' for key, value in o_dict.items()]
             print(all_insts)
 
+    def do_count(self, className):
+        """
+            custom command work when the the command is class.count()
+        """
+        count = 0
+        data = storage.all()
+        # print(data)
+        for key, value in data.items():
+            key_str = str(key).split(".")[0]
+            if key_str == className:
+                count += 1
+        print(count)
+
     def do_update(self, arg):
         """Updates an instance based on the class name and id
         by adding or updating attribute
@@ -163,6 +176,26 @@ class HBNBCommand(cmd.Cmd):
             else:
                 obj.__dict__[args[2]] = args[3].strip('"')
             storage.save()
+
+#    def custom_count_command(self, className):
+#        """
+#            custom command work when the the command is class.count()
+#        """
+#        count = 0
+#        data = storage.all()
+#        # print(data)
+#        for key, value in data.items():
+#            key_str = str(key).split(".")[0]
+#            if key_str == className:
+#                count += 1
+#        print(count)
+
+#    def default(self, line):
+#        """
+#            default command when the command is not recognized
+#        """
+#        if HBNBCommand.__command_is_all:
+#            print(f"*** Unknown syntax: {line}")
 
 
 if __name__ == '__main__':
