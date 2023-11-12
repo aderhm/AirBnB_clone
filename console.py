@@ -5,6 +5,7 @@ This file defines the HBnB console.
 
 import cmd
 import shlex
+import re
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
@@ -30,6 +31,29 @@ class HBNBCommand(cmd.Cmd):
         "Place",
         "Review"
     ]
+
+    def default(self, arg):
+        """Catches commands if they don't match our methods.
+        """
+        self._precmd(arg)
+
+    def _precmd(self, arg):
+        """Treats commands to support <class>.command() syntax.
+        Returns:
+            The modified command, or the original command
+            if it does not match the expected syntax.
+        """
+        match_cdc_syntax = re.search(r"^(\w*)\.(\w+)(?:\(([^)]*)\))$", arg)
+        if not match_cdc_syntax:
+            return arg
+
+        _class = match_cdc_syntax.group(1)
+        _command = match_cdc_syntax.group(2)
+        _arg = match_cdc_syntax.group(3).strip('"')
+        
+        cdc = _command + " " + _class + " " + _arg
+        self.onecmd(cdc)
+        return cdc
 
     def do_quit(self, arg):
         """Quit command to exit the program.
@@ -95,7 +119,7 @@ class HBNBCommand(cmd.Cmd):
             del o_dict["{}.{}".format(args[0], args[1])]
             storage.save()
 
-    def do_all(slef, arg):
+    def do_all(self, arg):
         """Prints all string representation of all instances
         based or not on the class name.
         Usage: all or all <class>
