@@ -19,11 +19,15 @@ class TestFileStorage(unittest.TestCase):
         """
         storage = FileStorage()
         self.storage = storage
-        # self.storage._FileStorage__file_path = "file_test.json"
 
-    # def tearDown(self):
-    #     if os.path.exists(self.storage._FileStorage__file_path):
-    #         os.remove(self.storage._FileStorage__file_path)
+    def test_has_attr(self):
+        """
+            test if my object has the all methods
+        """
+        self.assertTrue(hasattr(self.storage, "all"))
+        self.assertTrue(hasattr(self.storage, "new"))
+        self.assertTrue(hasattr(self.storage, "save"))
+        self.assertTrue(hasattr(self.storage, "reload"))
 
     def test_type_all_storage(self):
         """
