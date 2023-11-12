@@ -20,6 +20,10 @@ class TestFileStorage(unittest.TestCase):
         storage = FileStorage()
         self.storage = storage
 
+    def tearDown(self):
+        if os.path.exists(self.storage._FileStorage__file_path):
+            os.remove(self.storage._FileStorage__file_path)
+
     def test_has_attr(self):
         """
             test if my object has the all methods
@@ -59,3 +63,12 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(obj_before_serialization, obj_after_deserialization)
         self.assertEqual(type(obj_before_serialization),
                          type(obj_after_deserialization))
+
+    def test_reload(self):
+        """
+            test reload objects from file
+        """
+        obj_1 = BaseModel()
+        self.storage.reload()
+        object_reloaded = self.storage._FileStorage__objects
+        self.assertIn('BaseModel.{}'.format(obj_1.id), object_reloaded)
