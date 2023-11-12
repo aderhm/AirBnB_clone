@@ -21,6 +21,9 @@ class TestFileStorage(unittest.TestCase):
         storage = FileStorage()
         self.storage = storage
 
+    def test_instance(self):
+        self.assertIsInstance(self.storage, FileStorage)
+
     def test_has_attr(self):
         """
             test if my object has the all methods
