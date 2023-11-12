@@ -79,7 +79,15 @@ class TestFileStorage(unittest.TestCase):
         """
             test missing file
         """
-        self.assertRaises(FileNotFoundError, self.storage.reload())
+        if os.path.exists(self.storage._FileStorage__file_path):
+            os.remove(self.storage._FileStorage__file_path)
+        not_raised = False
+        try:
+            with self.assertRaises(FileNotFoundError):
+                self.storage.reload()
+        except:
+            not_raised = True
+        self.assertTrue(not_raised)
 
     def test_empty_json(self):
         """
