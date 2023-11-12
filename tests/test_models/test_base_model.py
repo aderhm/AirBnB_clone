@@ -48,6 +48,9 @@ class TestBaseModel(unittest.TestCase):
         self.assertNotEqual(self.my_model.id, self.my_second_model.id)
 
     def test_printing(self):
+        """
+            test __str__ method
+        """
         string = "[BaseModel] ({}) {}".format(
             self.my_model.id, self.my_model.__dict__)
         self.assertEqual(string, str(self.my_model))
