@@ -36,6 +36,9 @@ class TestFileStorage(unittest.TestCase):
         all_objects = self.storage.all()
         self.assertIsInstance(all_objects, dict)
 
+    def test_reload_missing_file(self):
+        self.assertRaises(FileNotFoundError, self.storage.reload())
+
     def test_empty_json(self):
         """
             test empty object
