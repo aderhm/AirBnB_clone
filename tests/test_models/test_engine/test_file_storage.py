@@ -36,6 +36,20 @@ class TestFileStorage(unittest.TestCase):
         all_objects = self.storage.all()
         self.assertIsInstance(all_objects, dict)
 
+    def test_all(self):
+        obj_1 = BaseModel()
+        obj_2 = BaseModel()
+
+        key_obj_1 = "{}.{}".format(obj_1.__class__.__name__, obj_1.id)
+        key_obj_2 = "{}.{}".format(obj_2.__class__.__name__, obj_2.id)
+
+        all_objects = self.storage.all()
+
+        self.assertIn(key_obj_1, all_objects.keys())
+        self.assertIn(key_obj_2, all_objects.keys())
+        self.assertIn(obj_1, all_objects.values())
+        self.assertIn(obj_2, all_objects.values())
+
     def test_reload_missing_file(self):
         """
             test missing file
@@ -57,7 +71,7 @@ class TestFileStorage(unittest.TestCase):
             test if the new object is added to attr __objects
         """
         new_obj = BaseModel()
-        self.storage.new(new_obj)
+        # self.storage.new(new_obj)
         key = "{}.{}".format(new_obj.__class__.__name__, new_obj.id)
         self.assertTrue(key in self.storage._FileStorage__objects)
         self.assertTrue(self.storage._FileStorage__objects[key] == new_obj)
@@ -66,7 +80,7 @@ class TestFileStorage(unittest.TestCase):
         """
             test deserialization of my __object attribute
         """
-        obj_1 = BaseModel()
+        BaseModel()
         obj_before_serialization = self.storage._FileStorage__objects
         self.storage.save()
         self.storage.reload()
