@@ -51,8 +51,6 @@ class TestFileStorage(unittest.TestCase):
             test deserialization of my __object attribute
         """
         obj_1 = BaseModel()
-        obj_2 = BaseModel()
-        self.storage.new(obj_1)
         obj_before_serialization = self.storage._FileStorage__objects
         self.storage.save()
         self.storage.reload()
