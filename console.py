@@ -31,7 +31,6 @@ class HBNBCommand(cmd.Cmd):
         "Place",
         "Review"
     ]
-    __command_is_all = True
 
     def default(self, arg):
         """Catches commands if they don't match our methods.
@@ -164,40 +163,6 @@ class HBNBCommand(cmd.Cmd):
             else:
                 obj.__dict__[args[2]] = args[3].strip('"')
             storage.save()
-
-    def precmd(self, line):
-        """
-            command executed before the command line
-            we check here if the command is class.all()
-        """
-        line = line.strip()
-        cmd = line.split(".")
-        if len(cmd) == 2 and cmd[1] == 'all()' and\
-                cmd[0] in HBNBCommand.__classes:
-            HBNBCommand.__command_is_all = False
-            self.custom_all_command(cmd[0])
-        else:
-            HBNBCommand.__command_is_all = True
-
-        return line
-
-    def custom_all_command(self, className):
-        """
-            custom command work when the the command is class.all()
-        """
-        data = storage.all()
-        filter_data = [f'{value}' for key, value in data.items()
-                       if key.startswith(className)]
-
-        filter_data = str(filter_data).replace('"', '')
-        print(filter_data)
-
-    def default(self, line):
-        """
-            default command when the command is not recognized
-        """
-        if HBNBCommand.__command_is_all:
-            print(f"*** Unknown syntax: {line}")
 
 
 if __name__ == '__main__':
