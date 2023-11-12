@@ -64,6 +64,12 @@ class TestFileStorage(unittest.TestCase):
 
         self.assertIn('BaseModel.{}'.format(obj_1.id), data.keys())
 
+    def test_reload_missing_file(self):
+        """
+            test missing file
+        """
+        self.assertRaises(FileNotFoundError, self.storage.reload())
+
     def test_empty_json(self):
         """
             test empty object
