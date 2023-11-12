@@ -38,6 +38,10 @@ class TestFileStorage(unittest.TestCase):
         self.assertIsInstance(all_objects, dict)
 
     def test_all(self):
+        """
+            test if all object created by Base model
+            insert in to __object attribute
+        """
         obj_1 = BaseModel()
         obj_2 = BaseModel()
 
@@ -52,6 +56,10 @@ class TestFileStorage(unittest.TestCase):
         self.assertIn(obj_2, all_objects.values())
 
     def test_created_file(self):
+        """
+            test if the file created succesfully
+            and the file have the expected key
+        """
         if os.path.exists(self.storage._FileStorage__file_path):
             os.remove(self.storage._FileStorage__file_path)
 
@@ -112,3 +120,14 @@ class TestFileStorage(unittest.TestCase):
         self.storage.reload()
         object_reloaded = self.storage._FileStorage__objects
         self.assertIn('BaseModel.{}'.format(obj_1.id), object_reloaded)
+
+    def test_save_BaseModel(self):
+        """
+            test for call save from BaseModel class
+        """
+        obj_1 = BaseModel()
+        obj_1.save()
+        with open(self.storage._FileStorage__file_path, 'r') as file:
+            data = json.load(file)
+
+        self.assertIn('BaseModel.{}'.format(obj_1.id), data.keys())
