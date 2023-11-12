@@ -145,13 +145,18 @@ class HBNBCommand(cmd.Cmd):
         """
             command executed before the command line
             we check here if the command is class.all()
+            or class.count()
         """
         line = line.strip()
         cmd = line.split(".")
-        if len(cmd) == 2 and cmd[1] == 'all()' and\
+        if len(cmd) == 2 and\
                 cmd[0] in HBNBCommand.__classes:
-            HBNBCommand.__command_is_all = False
-            self.custom_all_command(cmd[0])
+            if cmd[1] == 'all()':
+                HBNBCommand.__command_is_all = False
+                self.custom_all_command(cmd[0])
+            elif cmd[1] == 'count()':
+                HBNBCommand.__command_is_all = False
+                self.custom_count_command(cmd[0])
         else:
             HBNBCommand.__command_is_all = True
 
@@ -167,6 +172,19 @@ class HBNBCommand(cmd.Cmd):
 
         filter_data = str(filter_data).replace('"', '')
         print(filter_data)
+
+    def custom_count_command(self, className):
+        """
+            custom command work when the the command is class.count()
+        """
+        count = 0
+        data = storage.all()
+        # print(data)
+        for key, value in data.items():
+            key_str = str(key).split(".")[0]
+            if key_str == className:
+                count += 1
+        print(count)
 
     def default(self, line):
         """
